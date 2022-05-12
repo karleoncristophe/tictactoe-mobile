@@ -7,11 +7,17 @@
            @color/primary
         </item>
         <item name="android:windowBackground">
-            @drawable/ic_launcher_background
-        </item>
-        <item name="android:statusBarColor">
             @color/primary
         </item>
+    
+        <item name="android:windowSplashScreenBackground">
+           @color/ic_launcher_background
+        </item>
+
+        <item name="android:windowBackground">
+            @drawable/ic_launcher_background
+        </item>
+
     </style>
 
 </resources>
