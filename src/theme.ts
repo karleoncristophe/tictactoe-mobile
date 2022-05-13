@@ -67,7 +67,7 @@ const theme: DefaultTheme = {
     primary: '#FD5C5C',
     secondary: '#00C2FF',
     tertiary: '#9CC92F',
-    background: 'rgb(1, 1, 26)',
+    background: 'rgb(2, 2, 34)',
     disabled: '#D5D8DC',
     danger: '#FF0000',
     light: '#fff',
