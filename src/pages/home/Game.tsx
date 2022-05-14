@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {StackNavigationProp} from '@react-navigation/stack';
 import styled from 'styled-components/native';
-import ScreenWrapper from '../../common/ScreenWrapper';
 import Text from '../../common/Text';
+import Space from '../../common/Space';
 
 const Header = styled.View`
   display: flex;
@@ -41,12 +42,13 @@ const Player = styled.View`
 
 const Bnts = styled.View`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  background: red;
 `;
 
 const BntsReset = styled.TouchableOpacity`
-  border: none;
+  border: 1px solid tomato;
   padding: 10px 20px;
   border-radius: 5px;
 `;
@@ -79,89 +81,97 @@ const BoxItemButton = styled.TouchableOpacity`
   background: ${p => p.theme.colors.background};
 `;
 
-interface LocationStateProps {
-  player1: string;
-  player2: string;
+interface Props {
+  navigation: StackNavigationProp<any>;
+  route: any;
 }
 
-function Game() {
+function Game({route, navigation}: Props) {
   const [current, setCurrent] = useState('x');
   const [matriz, setMatriz] = useState<any[] | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
+  const [state, setState] = useState([]);
   const [pl1, setPl1] = useState<string | null>(null);
   const [pl2, setPl2] = useState<string | null>(null);
+
+  const player1 = route.params.data.player1;
+  const player2 = route.params.data.player2;
+
   const [placar, setPlacar] = useState({
     p1: 0,
     p2: 0,
   });
-  // const navigate = useNavigate();
 
-  // const location = useLocation();
-  // const myState: LocationStateProps = location.state as LocationStateProps;
+  const myState = route.params.data;
 
   const arr = [11, 12, 13, 21, 22, 23, 31, 32, 33];
 
-  // function resetAll() {
-  //   arr.map(id => {
-  //     let doc = document.getElementById(String(id)) as HTMLButtonElement;
-  //     doc.textContent = '';
-  //     doc.disabled = false;
-  //   });
+  // var buttonRef = useRef(null);
 
-  //   setWinner(null);
-  //   setCurrent('x');
-  //   setMatriz(null);
+  // console.log(buttonRef.current);
 
-  //   let newPlacar = {
-  //     p1: 0,
-  //     p2: 0
-  //   };
-  //   setPlacar(newPlacar);
-  // }
+  function resetAll() {
+    arr.map(id => {
+      let doc = document.getElementById(String(id)) as HTMLButtonElement;
+      doc.textContent = '';
+      doc.disabled = false;
+    });
 
-  // function resetPlacar() {
-  //   let newPlacar = {
-  //     p1: 0,
-  //     p2: 0
-  //   };
-  //   setPlacar(newPlacar);
-  // }
+    setWinner(null);
+    setCurrent('x');
+    setMatriz(null);
 
-  // function logout() {
-  //   arr.map(id => {
-  //     let doc = document.getElementById(String(id)) as HTMLButtonElement;
-  //     doc.textContent = '';
-  //     doc.disabled = false;
-  //   });
+    let newPlacar = {
+      p1: 0,
+      p2: 0,
+    };
+    setPlacar(newPlacar);
+  }
 
-  //   setWinner(null);
-  //   setCurrent('x');
-  //   setMatriz(null);
+  function resetPlacar() {
+    let newPlacar = {
+      p1: 0,
+      p2: 0,
+    };
+    setPlacar(newPlacar);
+  }
 
-  //   let newPlacar = {
-  //     p1: 0,
-  //     p2: 0
-  //   };
-  //   setPlacar(newPlacar);
-  //   setPl1(null);
-  //   setPl2(null);
-  //   location.state = null;
-  // }
+  function logout() {
+    arr.map(id => {
+      let doc = document.getElementById(String(id)) as HTMLButtonElement;
+      doc.textContent = '';
+      doc.disabled = false;
+    });
 
-  // function play(id: string) {
-  //   const doc = document.getElementById(id) as HTMLButtonElement;
+    setWinner(null);
+    setCurrent('x');
+    setMatriz(null);
 
-  //   doc.innerText = current;
-  //   let newMatriz = {id: id, value: doc.textContent};
-  //   if (matriz) {
-  //     setMatriz([...matriz, newMatriz]);
-  //   } else {
-  //     setMatriz([newMatriz]);
-  //   }
-  //   doc.disabled = true;
-  //   current == 'x' ? (doc.style.color = 'green') : (doc.style.color = 'tomato');
-  //   current == 'x' ? setCurrent('o') : setCurrent('x');
-  // }
+    let newPlacar = {
+      p1: 0,
+      p2: 0,
+    };
+    setPlacar(newPlacar);
+    setPl1(null);
+    setPl2(null);
+    route.params.data = null;
+  }
+
+  function play(id: any) {
+    setState(id);
+    // console.log(buttonRef);
+    // const doc = document.getElementById(id) as HTMLButtonElement;
+    // doc.innerText = current;
+    // let newMatriz = {id: id, value: doc.textContent};
+    // if (matriz) {
+    //   setMatriz([...matriz, newMatriz]);
+    // } else {
+    //   setMatriz([newMatriz]);
+    // }
+    // doc.disabled = true;
+    // current == 'x' ? (doc.style.color = 'green') : (doc.style.color = 'tomato');
+    // current == 'x' ? setCurrent('o') : setCurrent('x');
+  }
 
   // function incPlacar(player: number) {
   //   if (player == 1) {
@@ -179,7 +189,7 @@ function Game() {
 
   // useEffect(() => {
   //   if (myState == null) {
-  //     navigate('/');
+  //     navigation.goBack();
   //   } else {
   //     setPl1(myState.player1);
   //     setPl2(myState.player2);
@@ -191,18 +201,18 @@ function Game() {
   //   const lines = [
   //     ['11', '12', '13'],
   //     ['21', '22', '23'],
-  //     ['31', '32', '33']
+  //     ['31', '32', '33'],
   //   ];
 
   //   const columns = [
   //     ['11', '21', '31'],
   //     ['12', '22', '32'],
-  //     ['13', '23', '33']
+  //     ['13', '23', '33'],
   //   ];
 
   //   const diagonals = [
   //     ['11', '22', '33'],
-  //     ['13', '22', '31']
+  //     ['13', '22', '31'],
   //   ];
 
   //   const x = matriz?.filter(ele => ele.value == 'x');
@@ -339,51 +349,45 @@ function Game() {
         <Header>
           <Players>
             <Player>
-              <Text>
-                Jogador 1: <Text>X</Text>
+              <Text color="lightblue" size={14}>
+                Jogador 1:{' '}
+                <Text color="green" size={14}>
+                  X
+                </Text>
               </Text>
-              <Text>{/* {pl1} */}Jhon</Text>
-              <Text>{/* {placar.p1} */}8</Text>
+              <Space height={5} />
+              <Text size={16} bold numberOfLines={1}>
+                {player1}
+              </Text>
+              <Text size={30} bold>
+                {/* {placar.p1} */}8
+              </Text>
             </Player>
-            <Content>
-              <Bnts>
-                <BntsReset
-                //  onPress={resetAll}
-                >
-                  <Text>Reiniciar</Text>
-                </BntsReset>
-                <BntsReset
-                //  onPress={resetPlacar}
-                >
-                  <Text>Zerar Placar</Text>
-                </BntsReset>
-                <BntsReset>
-                  <Text>Sair</Text>
-                </BntsReset>
-              </Bnts>
-            </Content>
+
             <Player>
-              <Text>
-                Jogador 2: <Text>O</Text>
+              <Text color="lightblue" size={14}>
+                Jogador 2:{' '}
+                <Text color="tomato" size={14}>
+                  O
+                </Text>
               </Text>
-              <Text>{/* {pl2} */}karleon</Text>
-              <Text>{/* {placar.p2} */}10</Text>
+              <Space height={5} />
+              <Text size={15} bold numberOfLines={1}>
+                {player2}
+              </Text>
+              <Text size={30} bold>
+                {/* {placar.p2} */}10
+              </Text>
             </Player>
           </Players>
+          <Space height={20} />
           <Conteiner>
             <Box>
               {arr.map((id: number) => (
                 <BoxItemButton
-                  style={
-                    {
-                      // marginTop: id === 31 || 32 || 32 ? 3 : 0,
-                      // marginBottom: id === 31 || 32 || 32 ? 0 : 3,
-                    }
-                  }
+                  // ref={buttonRef}
                   key={id}
-                  // id={String(id)}
-                  //  onPress={() => play(String(id))}
-                >
+                  onPress={() => play(String(id))}>
                   <Text bold size={28}>
                     {id}
                   </Text>
@@ -391,6 +395,39 @@ function Game() {
               ))}
             </Box>
           </Conteiner>
+          <Content>
+            <Bnts>
+              <BntsReset
+
+              //  onPress={resetAll}
+              >
+                <Text size={16} color="tomato" bold>
+                  Reiniciar
+                </Text>
+              </BntsReset>
+              <Space height={10} />
+              <BntsReset
+                style={{
+                  borderColor: 'transparent',
+                  backgroundColor: 'lightblue',
+                }}
+                //  onPress={resetPlacar}
+              >
+                <Text size={16} color="black" bold>
+                  Zerar Placar
+                </Text>
+              </BntsReset>
+              <Space height={10} />
+              <BntsReset
+                style={{
+                  borderColor: 'transparent',
+                }}>
+                <Text size={16} bold>
+                  Sair
+                </Text>
+              </BntsReset>
+            </Bnts>
+          </Content>
         </Header>
       )}
     </>

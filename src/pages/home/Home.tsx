@@ -1,11 +1,8 @@
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import ScreenWrapper from '../../common/ScreenWrapper';
 import Text from '../../common/Text';
 import Space from '../../common/Space';
-import theme from '../../theme';
-import {Linking} from 'react-native';
+import {Linking, TextInputProps} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 const Container = styled.View`
   flex: 1;
@@ -52,24 +49,20 @@ interface Props {
   navigation: StackNavigationProp<any>;
 }
 
-function Home({navigation}: Props) {
+interface InputProps extends TextInputProps {}
+
+const Home = ({navigation}: Props) => {
   const [player1, setPlayer1] = useState<string>('');
   const [player2, setPlayer2] = useState<string>('');
+
   function handleNext() {
-    // const p1: any = document.getElementById('player1');
-    // const p2: any = document.getElementById('player2');
-    // if (player1 === '') {
-    //   p1?.focus();
-    //   return;
-    // }
-    // if (player2 === '') {
-    //   p2?.focus();
-    //   return;
-    // }
-    navigation.navigate(
-      'Game',
-      // {state: {player1, player2}}
-    );
+    if (player1 === '') {
+      return;
+    }
+    if (player2 === '') {
+      return;
+    }
+    navigation.navigate('Game', {data: {player1, player2}});
   }
 
   return (
@@ -81,23 +74,21 @@ function Home({navigation}: Props) {
       <InputsContent>
         <InputGroupContent>
           <Input
-            // id="player1"
             placeholder="Nome do jogador 1"
             value={player1}
-            // onChangeText={e => setPlayer1(e.target.value)}
+            onChangeText={e => setPlayer1(e)}
           />
         </InputGroupContent>
         <Space height={10} />
         <InputGroupContent>
           <Input
-            // id="player2"
             placeholder="Nome do jogador 2"
             value={player2}
-            // onChangeText={e => setPlayer2(e.target.value)}
+            onChangeText={e => setPlayer2(e)}
           />
         </InputGroupContent>
         <Space height={20} />
-        <Button onPress={handleNext}>
+        <Button onPress={handleNext} disabled={!player1 || !player2}>
           <Text size={20} bold align="center">
             Continuar
           </Text>
@@ -113,6 +104,6 @@ function Home({navigation}: Props) {
       </Footer>
     </Container>
   );
-}
+};
 
 export default Home;

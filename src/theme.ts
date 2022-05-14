@@ -28,7 +28,10 @@ declare module 'styled-components' {
         primary: string;
         secondary: string;
         disabled: string;
-        light: string;
+        green: string;
+        tomato: string;
+        lightblue: string;
+        black: string;
       };
       primary: string;
       secondary: string;
@@ -59,10 +62,13 @@ const theme: DefaultTheme = {
 
   colors: {
     text: {
-      primary: '#000',
-      secondary: '#575757',
+      primary: '#fff',
+      secondary: 'rgb(2, 2, 34)',
+      black: 'rgb(2, 2, 34)',
       disabled: '#BCA379',
-      light: '#fff',
+      green: 'green',
+      tomato: 'tomato',
+      lightblue: 'lightblue',
     },
     primary: '#FD5C5C',
     secondary: '#00C2FF',

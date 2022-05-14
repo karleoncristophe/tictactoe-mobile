@@ -45,7 +45,7 @@ const Text = ({
 Text.defaultProps = {
   size: 12,
   numberOfLines: 0,
-  color: theme.colors.text.light,
+  color: theme.colors.text.primary,
 };
 
 export default Text;
