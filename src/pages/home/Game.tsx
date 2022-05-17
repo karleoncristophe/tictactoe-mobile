@@ -43,6 +43,7 @@ const Player = styled.View`
 const Bnts = styled.View`
   display: flex;
   flex-direction: row;
+  margin-top: 10%;
   align-items: center;
   background: red;
 `;
@@ -106,7 +107,7 @@ function Game({route, navigation}: Props) {
 
   const arr = [11, 12, 13, 21, 22, 23, 31, 32, 33];
 
-  // var buttonRef = useRef(null);
+  const buttonRef = useRef<any>(null);
 
   // console.log(buttonRef.current);
 
@@ -157,8 +158,12 @@ function Game({route, navigation}: Props) {
     route.params.data = null;
   }
 
-  function play(id: any) {
-    setState(id);
+  function play(id: number) {
+    buttonRef.current = [];
+    if (id && !buttonRef.current.includes(id)) {
+      buttonRef.current.push(id);
+    }
+    console.log(buttonRef.current);
     // console.log(buttonRef);
     // const doc = document.getElementById(id) as HTMLButtonElement;
     // doc.innerText = current;
@@ -347,47 +352,47 @@ function Game({route, navigation}: Props) {
         </ContainerWinner>
       ) : (
         <Header>
-          <Players>
-            <Player>
-              <Text color="lightblue" size={14}>
-                Jogador 1:{' '}
-                <Text color="green" size={14}>
-                  X
-                </Text>
-              </Text>
-              <Space height={5} />
-              <Text size={16} bold numberOfLines={1}>
-                {player1}
-              </Text>
-              <Text size={30} bold>
-                {/* {placar.p1} */}8
-              </Text>
-            </Player>
-
-            <Player>
-              <Text color="lightblue" size={14}>
-                Jogador 2:{' '}
-                <Text color="tomato" size={14}>
-                  O
-                </Text>
-              </Text>
-              <Space height={5} />
-              <Text size={15} bold numberOfLines={1}>
-                {player2}
-              </Text>
-              <Text size={30} bold>
-                {/* {placar.p2} */}10
-              </Text>
-            </Player>
-          </Players>
-          <Space height={20} />
           <Conteiner>
+            <Players>
+              <Player>
+                <Text color="lightblue" size={14}>
+                  Jogador 1:{' '}
+                  <Text color="green" size={14}>
+                    X
+                  </Text>
+                </Text>
+                <Space height={5} />
+                <Text size={16} bold numberOfLines={1}>
+                  {player1}
+                </Text>
+                <Text size={30} bold>
+                  {/* {placar.p1} */}8
+                </Text>
+              </Player>
+
+              <Player>
+                <Text color="lightblue" size={14}>
+                  Jogador 2:{' '}
+                  <Text color="tomato" size={14}>
+                    O
+                  </Text>
+                </Text>
+                <Space height={5} />
+                <Text size={15} bold numberOfLines={1}>
+                  {player2}
+                </Text>
+                <Text size={30} bold>
+                  {/* {placar.p2} */}10
+                </Text>
+              </Player>
+            </Players>
+            <Space height={20} />
             <Box>
               {arr.map((id: number) => (
                 <BoxItemButton
-                  // ref={buttonRef}
+                  ref={buttonRef}
                   key={id}
-                  onPress={() => play(String(id))}>
+                  onPress={() => play(id)}>
                   <Text bold size={28}>
                     {id}
                   </Text>
