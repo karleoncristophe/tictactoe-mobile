@@ -9,30 +9,29 @@ const Header = styled.View`
   display: flex;
   flex: 1;
   justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background: ${p => p.theme.colors.background};
 `;
-const Content = styled.View``;
+const Content = styled.View`
+  width: 90%;
+`;
 
 const Players = styled.View`
   display: flex;
+  width: 90%;
+  margin-top: 10%;
   flex-direction: row;
-  align-items: center;
-`;
-
-const Player = styled.View`
-  display: flex;
-  margin: 20px;
-  flex-direction: column;
   align-items: center;
 `;
 
 const Bnts = styled.View`
+  margin-bottom: 10%;
   display: flex;
+  width: 100%;
+  justify-content: space-between;
   flex-direction: row;
-  margin-top: 10%;
   align-items: center;
-  background: red;
 `;
 
 const BntsReset = styled.TouchableOpacity`
@@ -42,6 +41,12 @@ const BntsReset = styled.TouchableOpacity`
 `;
 
 const Conteiner = styled.View`
+  overflow: hidden;
+  width: 100%;
+  align-items: center;
+`;
+
+const BoxConteiner = styled.View`
   overflow: hidden;
   width: 100%;
   align-items: center;
@@ -59,14 +64,40 @@ const Box = styled.View`
 `;
 
 const BoxItemButton = styled.TouchableOpacity`
-  width: 32.9%;
+  width: 33.2%;
   align-items: center;
   justify-content: center;
   position: relative;
   height: 85px;
   border: none;
-  margin-bottom: 2.4px;
+  margin-bottom: 1px;
   background: ${p => p.theme.colors.background};
+`;
+
+const PlayerLetterContet = styled.View`
+  height: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+  background: tomato;
+`;
+
+const PlayerNameContet = styled.View`
+  flex: 1;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background: white;
+`;
+
+const PlayerScoreContet = styled.View`
+  height: 50px;
+  width: 15%;
+  align-items: center;
+  justify-content: center;
+  background: #2b36e5;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 `;
 
 interface Props {
@@ -75,11 +106,12 @@ interface Props {
 }
 
 function Game({route, navigation}: Props) {
+  const [draw, setDraw] = useState(false);
+  const [symbol, setSymbol] = useState('X');
   const [scoreP1, setScoreP1] = useState<number>(0);
   const [scoreP2, setScoreP2] = useState<number>(0);
-  const [draw, setDraw] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
-  const [symbol, setSymbol] = useState('X');
+
   const [board, setBoard] = useState<string[]>([
     '',
     '',
@@ -91,8 +123,6 @@ function Game({route, navigation}: Props) {
     '',
     '',
   ]);
-  const playerOne = route.params.data.player1;
-  const playerTwo = route.params.data.player2;
 
   const winnersScenaries = [
     [0, 1, 2],
@@ -104,6 +134,9 @@ function Game({route, navigation}: Props) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
+  let playerOne = route.params.data.player1;
+  let playerTwo = route.params.data.player2;
 
   const play = (idx: number) => {
     if (winner || draw) return;
@@ -161,6 +194,10 @@ function Game({route, navigation}: Props) {
     setScoreP2(0);
   }
 
+  function goBack() {
+    navigation.goBack();
+  }
+
   const paintWinner = (ids: number[]) => {
     // ids.map(id => {
     //   divRef.current[id].animate(
@@ -183,55 +220,86 @@ function Game({route, navigation}: Props) {
     <Header>
       <Conteiner>
         <Players>
-          <Player>
-            <Text color="lightblue" size={14}>
-              Jogador 1:{' '}
-              <Text color="green" size={14}>
-                X
-              </Text>
+          <Space height={5} />
+          <PlayerLetterContet
+            style={{
+              backgroundColor: 'green',
+              borderTopLeftRadius: 4,
+              borderBottomLeftRadius: 4,
+            }}>
+            <Text size={15} bold>
+              X
             </Text>
-            <Space height={5} />
+          </PlayerLetterContet>
+          <PlayerNameContet>
             <Text
+              ellipsizeMode="tail"
               size={16}
               bold
               numberOfLines={1}
-              style={{color: symbol === 'X' ? 'yellow' : 'white'}}>
+              style={{
+                color: symbol === 'X' ? '#2b36e5' : 'rgb(2, 2, 34)',
+                paddingLeft: 2,
+                paddingRight: 2,
+              }}>
               {playerOne}
             </Text>
-            <Text size={30} bold>
+          </PlayerNameContet>
+
+          <Space height={5} />
+          <PlayerScoreContet>
+            <Text size={20} bold ellipsizeMode="tail">
               {scoreP1}
             </Text>
-          </Player>
-
-          <Player>
-            <Text color="lightblue" size={14}>
-              Jogador 2:{' '}
-              <Text color="tomato" size={14}>
-                O
-              </Text>
+          </PlayerScoreContet>
+          <PlayerScoreContet
+            style={{
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+              borderTopRightRadius: 4,
+              borderBottomRightRadius: 4,
+            }}>
+            <Text size={20} bold ellipsizeMode="tail">
+              {scoreP2}
             </Text>
-            <Space height={5} />
+          </PlayerScoreContet>
+          <PlayerNameContet>
             <Text
+              ellipsizeMode="tail"
               size={15}
               bold
               numberOfLines={1}
-              style={{color: symbol === 'O' ? 'yellow' : 'white'}}>
+              style={{
+                color: symbol === 'O' ? '#2b36e5' : 'rgb(2, 2, 34)',
+                paddingLeft: 2,
+                paddingRight: 2,
+              }}>
               {playerTwo}
             </Text>
-            <Text size={30} bold>
-              {scoreP2}
+          </PlayerNameContet>
+          <PlayerLetterContet
+            style={{borderTopRightRadius: 4, borderBottomRightRadius: 4}}>
+            <Text size={15} bold>
+              O
             </Text>
-          </Player>
+          </PlayerLetterContet>
         </Players>
         <Space height={20} />
+      </Conteiner>
+      <BoxConteiner>
         <Box>
           {board.map((id: string, index: number) => (
             <BoxItemButton key={index} onPress={() => play(index)}>
-              <Span style={{color: id === 'X' ? 'green' : 'tomato'}}>{id}</Span>
+              <Text
+                style={{color: id === 'X' ? 'green' : 'tomato'}}
+                size={30}
+                bold>
+                {id}
+              </Text>
             </BoxItemButton>
           ))}
         </Box>
-      </Conteiner>
+      </BoxConteiner>
       <Content>
         <Bnts>
           <BntsReset onPress={restartBoard}>
@@ -255,7 +323,7 @@ function Game({route, navigation}: Props) {
             style={{
               borderColor: 'transparent',
             }}
-            onPress={() => navigation.goBack()}>
+            onPress={goBack}>
             <Text size={16} bold>
               Sair
             </Text>

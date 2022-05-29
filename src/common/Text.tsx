@@ -19,6 +19,7 @@ interface Props {
   style?: any;
   uppercase?: boolean;
   numberOfLines?: number;
+  ellipsizeMode?: 'tail';
 }
 
 const Text = ({
@@ -30,6 +31,7 @@ const Text = ({
   style,
   uppercase,
   numberOfLines,
+  ellipsizeMode,
 }: Props) => (
   <Wrapper
     numberOfLines={numberOfLines}
@@ -37,7 +39,8 @@ const Text = ({
     bold={bold}
     size={size}
     color={color}
-    style={style}>
+    style={style}
+    ellipsizeMode={ellipsizeMode}>
     {uppercase ? children.toUpperCase() : children}
   </Wrapper>
 );
