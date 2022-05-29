@@ -101,6 +101,13 @@ const Home = ({navigation}: Props) => {
           onPress={() => Linking.openURL('https://github.com/jhonataspaulo')}>
           <Text size={15}>Jhonatas Paulo</Text>
         </Link>
+        <Text size={15}> e</Text>
+        <Link
+          onPress={() =>
+            Linking.openURL('https://github.com/karleoncristophe')
+          }>
+          <Text size={15}>Karleon </Text>
+        </Link>
       </Footer>
     </Container>
   );
